@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>80-летие Победы</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .gradient-background {
+      height: 100%;
+      background: linear-gradient(to top right, #820B0B, #FD0000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .content {
+      display: flex;
+      width: 100%;
+      max-height: 100%;
+    }
+
+    .image-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5%;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 100%;
+      height: auto;
+    }
+
+    .text-container {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding-left: 2%;
+    }
+
+    .anniversary-text {
+      font-size: 3vw;
+    }
+
+    .days-counter {
+      font-size: 10vw;
+      font-weight: bold;
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="gradient-background">
+    <div class="content">
+      <div class="image-container">
+        <img src="./img.png" alt="Победа" style="width: 100%;">
+      </div>
+      <div class="text-container">
+        <p class="anniversary-text">ДО 80-ЛЕТИЯ ПОБЕДЫ ОСТАЛОСЬ</p>
+        <div id="days-counter" class="days-counter"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const endDate = new Date('2025-05-09T00:00:00');
+    const daysCounter = document.getElementById('days-counter');
+    const anniversaryText = document.querySelector('.anniversary-text');
+
+    function getDayDeclension(number) {
+      const cases = [2, 0, 1, 1, 1, 2];
+      const titles = ['день', 'дня', 'дней'];
+      return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+    }
+
+    function updateCounter() {
+      const now = new Date();
+      const remainingTime = endDate - now;
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        anniversaryText.style.display = 'none';
+        daysCounter.textContent = 'Победа!';
+      } else {
+        const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+        daysCounter.textContent = `${days} ${getDayDeclension(days)}`;
+        fadeInAndOut(daysCounter);
+      }
+    }
+
+    function fadeInAndOut(element) {
+      element.style.opacity = 1;
+      setTimeout(() => {
+        element.style.opacity = 0.1;
+      }, 2000);
+    }
+
+    const timerInterval = setInterval(updateCounter, 4000);
+    updateCounter();
+  </script>
+</body>
+
+</html>
